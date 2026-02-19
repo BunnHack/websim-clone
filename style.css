@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Transitions for device switching */
+#browser-frame {
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+textarea:focus {
+    outline: none;
+}
+
+/* VS Code style file list adjustments */
+#assets-list-rows > div {
+    user-select: none;
+    border-left: 2px solid transparent;
+}
+#assets-list-rows > div:hover {
+    background-color: #2a2d2e;
+}
+#assets-list-rows > div.active {
+    background-color: #37373d;
+    border-left-color: #007acc;
+}
+
+/* Custom scrollbar for the feed */
+.overflow-y-auto::-webkit-scrollbar {
+    width: 4px;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+    background: transparent;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #222;
+    border-radius: 10px;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: #3a3a3a;
+}
+
+/* CodeMirror overrides */
+#codemirror-container .cm-editor {
+    height: 100%;
+}
+#codemirror-container .cm-scroller {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 13px;
+}
