@@ -1,11 +1,36 @@
 import { PROVIDERS } from './constants.js';
 import { state } from './state.js';
 
+// Configuration for the AI proxy
+// Set USE_PROXY to true and provide your Cloudflare Worker URL
+// to hide API keys from the frontend
+const CONFIG = {
+    USE_PROXY: false,  // Set to true when you have deployed the Cloudflare Worker
+    PROXY_URL: 'https://websim-ai-proxy.your-subdomain.workers.dev',  // Replace with your Cloudflare Worker URL
+};
+
 export async function* generateAIContentStream(promptText, history) {
     const provider = PROVIDERS[state.selectedProviderId] || PROVIDERS.megallm;
     const apiKey = provider.apiKey;
-    const apiUrl = `${provider.baseUrl}/chat/completions`;
     const modelId = state.selectedModelId;
+
+    let apiUrl;
+    let headers;
+
+    if (CONFIG.USE_PROXY) {
+        // Use the Cloudflare Worker (API key hidden)
+        apiUrl = CONFIG.PROXY_URL;
+        headers = {
+            'Content-Type': 'application/json',
+        };
+    } else {
+        // Direct API call (API key exposed in frontend)
+        apiUrl = `${provider.baseUrl}/chat/completions`;
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+        };
+    }
 
     const messages = [
         { 
@@ -26,17 +51,14 @@ export async function* generateAIContentStream(promptText, history) {
         { role: 'user', content: promptText }
     ];
 
+    const requestBody = CONFIG.USE_PROXY 
+        ? { messages, model: modelId }
+        : { model: modelId, messages: messages };
+
     const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-            model: modelId,
-            messages: messages,
-            stream: true
-        })
+        headers: headers,
+        body: JSON.stringify(requestBody)
     });
 
     if (!response.ok) throw new Error('API request failed');
@@ -133,3 +155,6 @@ export async function generateAIContent(promptText, history) {
     }
     return parseAIResponse(finalContent).files;
 }
+
+// Export configuration for easy access
+export const PROXY_CONFIG = CONFIG;

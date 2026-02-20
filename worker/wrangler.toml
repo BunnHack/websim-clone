@@ -1,0 +1,17 @@
+name = "websim-ai-proxy"
+main = "ai-proxy.js"
+compatibility_date = "2024-01-01"
+
+# Environment variables should be set via Cloudflare Dashboard
+# Go to Workers & Pages > your-worker > Settings > Variables
+# Add the following secrets:
+# - MEGALLM_API_KEY: Your MegaLLM API key
+# - MEGALLM_BASE_URL: (Optional) The base URL for the AI API
+
+[vars]
+# No static vars here - API keys should be secrets
+
+# Development settings
+[dev]
+port = 8787
+local_protocol = "http"
