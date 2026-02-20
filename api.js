@@ -5,8 +5,8 @@ import { state } from './state.js';
 // Set USE_PROXY to true and provide your Cloudflare Worker URL
 // to hide API keys from the frontend
 const CONFIG = {
-    USE_PROXY: false,  // Set to true when you have deployed the Cloudflare Worker
-    PROXY_URL: 'https://websim-ai-proxy.your-subdomain.workers.dev',  // Replace with your Cloudflare Worker URL
+    USE_PROXY: true,  // Set to true when you have deployed the Cloudflare Worker
+    PROXY_URL: 'https://letsim-backend.susbontan.workers.dev',  // Replace with your Cloudflare Worker URL
 };
 
 export async function* generateAIContentStream(promptText, history) {
